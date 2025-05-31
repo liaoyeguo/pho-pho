@@ -1,6 +1,6 @@
 import { z } from "zod";
 import { procedure, router } from "../init";
-import { uploadImageProcedure } from "./uoload-image";
+import { uploadImageProcedure } from "./add-image";
 
 export const appRouter = router({
   uploadImage: uploadImageProcedure,

@@ -10,7 +10,8 @@ import {
 
 export const photosTable = pgTable("photos", {
   id: serial().primaryKey(),
-  url: text("url"),
+  url: varchar({ length: 255 }),
+  name: varchar({ length: 255 }),
 });
 
 export const photosRelations = relations(photosTable, ({ many }) => ({
