@@ -9,6 +9,7 @@ import { useTranslations } from "next-intl";
 import { useTRPC } from "@/utils/trpc";
 import { IconSpin } from "@douyinfe/semi-icons";
 import classNames from "classnames";
+import Link from "next/link";
 
 export const PhotoList = (props: { className?: string }) => {
   const t = useTranslations("gallery");
@@ -43,12 +44,12 @@ export const PhotoList = (props: { className?: string }) => {
       dataSource={data.list}
       renderItem={item => (
         <List.Item >
-          <div>
+          <Link href={`/photo?id=${item.id}`}>
             <Image src={item.url} preview={false} height={240} imgCls="relative top-[50%] -translate-y-[50%]" />
             <h3
               className="text-semi-color-text-0 mt-1 mb-4"
             >{item.name}</h3>
-          </div>
+          </Link>
         </List.Item>
       )}
     />
