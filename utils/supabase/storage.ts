@@ -14,11 +14,11 @@ export const uploadFile = async (
     const supabase = createClient()
     const bucket = supabase.storage.from("photos");
     const { error } = await bucket.upload(
-        `${folderName}/${fileName}${ext ? "." + ext : ""}`,
+        filePath,
         file,
         options
     );
 
-    if (error) return undefined;
-    return bucket.getPublicUrl(filePath).data.publicUrl;
+    if (error) throw error;
+    return filePath
 };

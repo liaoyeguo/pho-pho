@@ -3,7 +3,8 @@
     "btn": "哈哈",
     "page_title": "相册",
     "empty_title": "没有照片",
-    "empty_desc": "你的相册空空如也，马上添加照片吧"
+    "empty_desc": "你的相册空空如也，马上添加照片吧",
+    "add_photo_success": "添加成功"
   },
   "image-upload": {
     "add_photo_btn": "添加照片"

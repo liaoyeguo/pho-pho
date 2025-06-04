@@ -1,7 +1,6 @@
-import { httpBatchLink } from "@trpc/client";
-import { createTRPCNext } from "@trpc/next";
-import { ssrPrepass } from "@trpc/next/ssrPrepass";
-import type { AppRouter } from "@/app/api/trpc/routers";
+import { createTRPCClient, httpBatchLink } from "@trpc/client";
+import type { AppRouter } from "@/app/api/trpc";
+import { createTRPCContext } from '@trpc/tanstack-react-query';
 
 function getBaseUrl() {
   if (typeof window !== "undefined") {
@@ -19,17 +18,12 @@ function getBaseUrl() {
   return `http://localhost:${process.env.PORT ?? 3000}`;
 }
 
-export const trpc = createTRPCNext<AppRouter>({
-  config() {
-    const url = getBaseUrl() + "/api/trpc";
-    return {
-      links: [
-        httpBatchLink({
-          url,
-        }),
-      ],
-    };
-  },
-  ssr: true,
-  ssrPrepass,
+export const trpc = createTRPCClient<AppRouter>({
+  links: [
+    httpBatchLink({
+      url: getBaseUrl() + "/api/trpc",
+    }),
+  ],
 });
+
+export const { TRPCProvider, useTRPC, useTRPCClient } = createTRPCContext<AppRouter>();

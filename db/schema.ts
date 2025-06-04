@@ -4,7 +4,6 @@ import {
   pgTable,
   primaryKey,
   serial,
-  text,
   varchar,
 } from "drizzle-orm/pg-core";
 

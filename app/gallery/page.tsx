@@ -1,19 +1,23 @@
 "use client";
 import { ImageUpload } from "@/components/image-upload";
-import { trpc } from "@/utils/trpc";
-import {
-  IllustrationNoContent,
-  IllustrationNoContentDark,
-} from "@douyinfe/semi-illustrations";
-import { Button, Empty, Layout, Typography } from "@douyinfe/semi-ui";
+import { Layout, Toast, Typography } from "@douyinfe/semi-ui";
 import { useTranslations } from "next-intl";
+import { useMutation } from "@tanstack/react-query";
+import { PhotoList } from "./photo-list";
+import { useTRPC } from "@/utils/trpc";
 
 const { Title } = Typography;
 
 function Gallery() {
   const t = useTranslations("gallery");
-  const a = trpc.hello.useQuery({ text: "haha" });
-  console.log("============== a", a.data);
+  const trpc = useTRPC();
+  const { mutateAsync } = useMutation(trpc.addPhoto.mutationOptions())
+
+  const handlelAddImage = async ({ url }: { url: string }, file: File) => {
+    await mutateAsync({ url, name: file.name })
+    Toast.success(t("add_photo_success"))
+  };
+
   return (
     <div className="h-screen bg-semi-color-bg-0">
       <Layout className="h-full">
@@ -22,27 +26,15 @@ function Gallery() {
             Pho Pho
           </div>
         </Layout.Header>
-        <Layout.Content>
-          <div className="h-full md:max-w-[720px] lg:max-w-[980px] mx-auto py-2">
+        <Layout.Content className="overflow-auto">
+          <div className="md:max-w-[720px] lg:max-w-[980px] mx-auto py-2">
             <div className="flex justify-between items-center">
               <Title heading={4} style={{ margin: "8px 0" }}>
                 {t("page_title")}
               </Title>
-              <ImageUpload />
+              <ImageUpload onSuccess={handlelAddImage} />
             </div>
-            <Empty
-              className="mt-16"
-              image={
-                <IllustrationNoContent style={{ width: 150, height: 150 }} />
-              }
-              darkModeImage={
-                <IllustrationNoContentDark
-                  style={{ width: 150, height: 150 }}
-                />
-              }
-              title={t("empty_title")}
-              description={t("empty_desc")}
-            />
+            <PhotoList className="mt-4" />
           </div>
         </Layout.Content>
       </Layout>
@@ -50,4 +42,4 @@ function Gallery() {
   );
 }
 
-export default trpc.withTRPC(Gallery);
+export default Gallery;
